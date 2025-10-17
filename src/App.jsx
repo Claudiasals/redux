@@ -1,6 +1,10 @@
+import ToDoList from "./pages/todoList";
+
+
 const App = () => {
-  retyrn (
+  return (
     <>
+    <ToDoList/>
     </>
   )
 }
