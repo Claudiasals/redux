@@ -12,8 +12,6 @@ const todoSlice = createSlice({
             state.items.push(action.payload);
         }
     }
-
-    
 });
 
 
