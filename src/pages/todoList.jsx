@@ -1,42 +1,49 @@
-
-/* ES. 22: Utilizza Fetch in una componente
-Crea una componente chiamata TodoList che utilizza useFetch 
-per recuperare una lista di to-do da un'API 
-(puoi usare un endpoint fittizio come https://jsonplaceholder.typicode.com/todos). 
-Visualizza i to-do in una lista, 
-mostrando un messaggio di caricamento finché i dati non sono disponibili 
-e un messaggio di errore se qualcosa va storto. */
-
-import { useState } from "react";
-import useFetch from "./useFetch";
+import { useEffect, useState } from "react";
 // importo la hook per filtrare i termini di ricerca
 import useFilteredTodos from "./useFilteredTodos";
 
+import { useDispatch, useSelector } from "react-redux";
+/*
+useSelector serve a leggere lo stato dallo store
+Immagina lo store come un grande contenitore globale.
+useSelector ti permette di prendere solo la parte di stato che ti serve dentro un componente. 
+*/
+
+import { fetchTodos } from "../store/features/todoSlice"; 
+// fetchTodos è un thunk creato con createAsyncThunk per fare fetch dei to-do
+
 const ToDoList = () => {
-    // Chiamo l'hook useFetch per recuperare i dati dall'API.
-    // L'hook restituisce tre valori: 
-    // data = i dati ricevuti dall'API
-    // loading = true se la fetch è in corso, false se terminata
-    // error = eventuale messaggio di errore se la fetch fallisce    
-    const { data, loading, error } = useFetch("https://jsonplaceholder.typicode.com/todos");
-    console.log(loading)
-    console.log(error)
-    console.log(data)
+   
+    const dispatch = useDispatch(); // serve per chiamare le azioni/reducer dello store
+
+    // prendo dallo store: items (lista dei to-do), loading e error
+    const { items: todos, loading, error } = useSelector(state => state.todos);
+    // useSelector ti permette di prendere solo la parte di stato
+    // che ti serve dentro un componente. 
+
 
     // creo lo state per i termini di ricerca
     const [search, setSearch] = useState("");
 
     // utlizzo l'hook per ottenere la lista filtrata
-    const filteredTodos = useFilteredTodos(data || [], search);
+    const filteredTodos = useFilteredTodos(todos || [], search);
     // || = Se todos è falso, null, undefined o [] vuoto → usa un array vuoto al posto di todos
     // Serve per evitare errori nel caso in cui i dati non siano ancora arrivati dal fetch.
 
+    // uso useEffect per fare il fetch dei to-do all'avvio del componente
+    useEffect(() => {
+        dispatch(fetchTodos()); 
+        // dispatch chiama il thunk fetchTodos, che farà la chiamata all'API
+        // e popolerà lo store con i to-do ricevuti
+    }, [dispatch]);
 
-    // mostro i msg di loading e di errore, perché dal useFetch 
-    // prende soltanto i valori e non i msg html
-    if (loading) return <p>Caricamento lista To-Do...</p>;
-    if (error) return <p>Errore: {error}</p>;
 
+    // mostro i msg di loading e di errore
+    if (loading) return <p>Caricamento lista To-Do...</p>; 
+    // se loading = true, mostra il messaggio
+
+    if (error) return <p>Errore: {error}</p>; 
+    // se c'è un errore nella fetch, mostra il messaggio
 
 
     return ( // utilizzo map per ciclare e poter utilizzare i dati che mi servono 

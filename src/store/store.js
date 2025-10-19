@@ -27,3 +27,4 @@ aggiungo action.payload all’array items nello stato”.
 
   */
  export default store;
+
