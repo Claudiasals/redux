@@ -17,7 +17,18 @@ Se il fetch fallisce, qui salviamo il messaggio di errore, così il componente p
 */
 
 // thunk per fare il fetch dei to-do
-export const fetchTodos = createAsyncThunk(
+const fetchTodos = createAsyncThunk(
+    /* generare automaticamente i tre stati dell’operazione asincrona:
+    pending → quando la richiesta parte,
+    fulfilled → quando la richiesta ha successo,
+    rejected → quando fallisce.
+    
+    In pratica, Redux Toolkit creerà automaticamente tre action types:
+
+    "todos/fetchTodos/pending"
+    "todos/fetchTodos/fulfilled"
+    "todos/fetchTodos/rejected"
+    */
     "todos/fetchTodos",
     async () => {
         const res = await fetch("https://jsonplaceholder.typicode.com/todos?_limit=10");
@@ -95,4 +106,5 @@ const todoSlice = createSlice({
 });
 
 export const { addTodo, removeTodo, editTodo } = todoSlice.actions;
+export { fetchTodos }; 
 export default todoSlice.reducer;
