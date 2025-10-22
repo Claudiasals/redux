@@ -1,10 +1,12 @@
 import ToDoList from "./pages/todoList";
-import './index.css';
 
 const App = () => {
   return (
     <>
     <ToDoList/>
+    <div className="bg-blue-500 text-white p-4">
+      Test Tailwind!
+    </div>
     </>
   )
 }
