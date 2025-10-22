@@ -1,5 +1,5 @@
 import ToDoList from "./pages/todoList";
-
+import './index.css';
 
 const App = () => {
   return (

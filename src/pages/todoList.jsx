@@ -1,3 +1,4 @@
+import { checkTodo } from "../store/features/todoSlice";
 import { useEffect, useState } from "react";
 // importo la hook per filtrare i termini di ricerca
 import useFilteredTodos from "./useFilteredTodos";
@@ -72,7 +73,7 @@ const ToDoList = () => {
 
             <ul>
                 {filteredTodos.map((todo) => (
-                    <li key={todo.id}>{todo.title}</li>
+                    <li key={todo.id}>{todo.title} {todo.completed.toString()} <button className="bg-blu-500 texh-white rounded px-4 py-2" onClick={()=>dispatch(checkTodo(todo.id))}> Completa </button></li>
                 ))}
                 {/* Per ogni todo filtrato creo un <li> con titolo
        key={todo.id} serve a React per sapere quale elemento è quale quando aggiorna il DOM */}
@@ -83,3 +84,4 @@ const ToDoList = () => {
 }
 
 export default ToDoList;
+

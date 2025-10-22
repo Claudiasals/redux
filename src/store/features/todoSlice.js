@@ -75,6 +75,13 @@ const todoSlice = createSlice({
                 state.items[index] = action.payload;
                 /* Sostituisci l’elemento in quella posizione (indice) con i nuovi dati (action.payload) */
             }
+        },
+
+        checkTodo: (state, action) =>  {
+            const idTodo = action.payload
+            const findTodo = state.items.find(todo => todo.id === idTodo);
+            findTodo.completed = true;
+
         }
     },
 
@@ -105,6 +112,6 @@ const todoSlice = createSlice({
     }
 });
 
-export const { addTodo, removeTodo, editTodo } = todoSlice.actions;
+export const { addTodo, removeTodo, editTodo, checkTodo } = todoSlice.actions;
 export { fetchTodos }; 
 export default todoSlice.reducer;
