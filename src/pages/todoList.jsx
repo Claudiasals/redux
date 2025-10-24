@@ -72,6 +72,7 @@ const ToDoList = () => {
             />
 
             <ul>
+                
                 {filteredTodos.map((todo) => (
                     <li key={todo.id}>{todo.title} {todo.completed.toString()} <button className="bg-blu-500 texh-white rounded px-4 py-2" onClick={()=>dispatch(checkTodo(todo.id))}> Completa </button></li>
                 ))}
@@ -84,4 +85,5 @@ const ToDoList = () => {
 }
 
 export default ToDoList;
+
 
