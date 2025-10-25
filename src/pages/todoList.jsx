@@ -10,11 +10,11 @@ Immagina lo store come un grande contenitore globale.
 useSelector ti permette di prendere solo la parte di stato che ti serve dentro un componente. 
 */
 
-import { fetchTodos } from "../store/features/todoSlice"; 
+import { fetchTodos } from "../store/features/todoSlice";
 // fetchTodos è un thunk creato con createAsyncThunk per fare fetch dei to-do
 
 const ToDoList = () => {
-   
+
     const dispatch = useDispatch(); // serve per chiamare le azioni/reducer dello store
 
     // prendo dallo store: items (lista dei to-do), loading e error
@@ -33,25 +33,25 @@ const ToDoList = () => {
 
     // uso useEffect per fare il fetch dei to-do all'avvio del componente
     useEffect(() => {
-        dispatch(fetchTodos()); 
+        dispatch(fetchTodos());
         // dispatch chiama il thunk fetchTodos, che farà la chiamata all'API
         // e popolerà lo store con i to-do ricevuti
     }, [dispatch]);
 
 
     // mostro i msg di loading e di errore
-    if (loading) return <p>Caricamento lista To-Do...</p>; 
+    if (loading) return <p>Caricamento lista To-Do...</p>;
     // se loading = true, mostra il messaggio
 
-    if (error) return <p>Errore: {error}</p>; 
+    if (error) return <p>Errore: {error}</p>;
     // se c'è un errore nella fetch, mostra il messaggio
 
 
     return ( // utilizzo map per ciclare e poter utilizzare i dati che mi servono 
         // da ogni elemento dell'array scaricato
-        <>
-
-            <input
+        <div className="max-w-md mx-auto mt-10 p-4 bg-white rounded-2xl shadow-md">
+            <h1 className="text-2xl font-semibold text-center mb-4 text-gray-800"> To Do List </h1>
+            <input className="w-full px-3 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 // Il valore dell'input è legato allo stato "search"
                 // Questo lo rende un "controlled component": React controlla cosa viene mostrato
                 value={search}
@@ -71,19 +71,36 @@ const ToDoList = () => {
                 placeholder="Cerca un to-do..."
             />
 
-            <ul>
-                
+            <ul className="space-y-3">
+
                 {filteredTodos.map((todo) => (
-                    <li key={todo.id}>{todo.title} {todo.completed.toString()} <button className="bg-blu-500 texh-white rounded px-4 py-2" onClick={()=>dispatch(checkTodo(todo.id))}> Completa </button></li>
+                    <li key={todo.id}>{todo.title} {todo.completed.toString()} <button className="bg-blue-500 text-white rounded px-4 py-2" onClick={() => dispatch(checkTodo(todo.id))}> fatto </button></li>
                 ))}
                 {/* Per ogni todo filtrato creo un <li> con titolo
        key={todo.id} serve a React per sapere quale elemento è quale quando aggiorna il DOM */}
             </ul>
 
-        </>
+        </div>
     )
 }
 
 export default ToDoList;
 
 
+/* 
+TAILWIND:
+max-w-md → larghezza massima media (centrato e leggibile)
+mx-auto → centra orizzontalmente il contenitore
+mt-10 → margine superiore per staccarlo dal bordo della pagina
+p-4 → padding interno (spazio tra contenuto e bordo)
+bg-white → sfondo bianco
+rounded-2xl → angoli molto arrotondati
+shadow-md → ombra media per dare effetto “card” w-full → occupa tutta la larghezza del contenitore
+px-3 py-2 → padding orizzontale e verticale
+mb-4 → margine sotto per distanziarlo dalla lista
+border border-gray-300 → bordo sottile grigio chiaro
+rounded-lg → angoli arrotondati
+focus:outline-none → rimuove il bordo blu predefinito dei browser
+focus:ring-2 focus:ring-blue-500 → aggiunge un alone blu quando è selezionato
+       
+*/
